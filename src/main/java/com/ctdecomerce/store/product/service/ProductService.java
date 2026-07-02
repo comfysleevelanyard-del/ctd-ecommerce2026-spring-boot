@@ -8,7 +8,7 @@ import com.ctdecomerce.store.retailers.repository.RetailersRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,5 +31,10 @@ public class ProductService {
         productModel.setOwner(retailersModel);
         productRepo.save(productModel);
         return productModel;
+    }
+
+    @Transactional
+    public List<ProductModel> getAllProducts() {
+        return productRepo.findAll();
     }
 }
