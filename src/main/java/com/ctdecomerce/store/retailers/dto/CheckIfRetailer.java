@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConnectedAccountDTO {
-    private String url;
+public class CheckIfRetailer{
+    private boolean retailer;
 }

@@ -24,8 +24,8 @@ public class RetailersService {
     public ConnectedAccountDTO createNewRetailer(ConnectedAccountRequest connectedAccountRequest) throws StripeException {
         AccountCreateParams accountCreateParams = AccountCreateParams
                 .builder()
-                .putMetadata("name", connectedAccountRequest.name())
-                .putMetadata("userId", connectedAccountRequest.userId())
+                .putMetadata("name", connectedAccountRequest.getName())
+                .putMetadata("userId", connectedAccountRequest.getUserId())
                 .setType(AccountCreateParams.Type.EXPRESS)
                 .build();
         Account account = Account.create(accountCreateParams);

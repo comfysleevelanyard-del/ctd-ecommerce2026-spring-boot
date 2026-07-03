@@ -1,4 +1,15 @@
 package com.ctdecomerce.store.product.dto;
 
-public record CreateProductDTO(String name, String description, int priceInCents, String userId) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CreateProductDTO {
+    private String name;
+    private String description;
+    private int priceInCents;
+    private String userId;
 }

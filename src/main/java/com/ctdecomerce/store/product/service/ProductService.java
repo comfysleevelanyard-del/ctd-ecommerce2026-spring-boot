@@ -24,10 +24,10 @@ public class ProductService {
     @Transactional
     public ProductModel createProduct(CreateProductDTO createProductDTO) {
         ProductModel productModel = new ProductModel();
-        productModel.setName(createProductDTO.name());
-        productModel.setDescription(createProductDTO.description());
-        productModel.setPriceInCents(createProductDTO.priceInCents());
-        RetailersModel retailersModel = retailersRepo.findRetailerById(UUID.fromString(createProductDTO.userId()));
+        productModel.setName(createProductDTO.getName());
+        productModel.setDescription(createProductDTO.getDescription());
+        productModel.setPriceInCents(createProductDTO.getPriceInCents());
+        RetailersModel retailersModel = retailersRepo.findRetailerById(UUID.fromString(createProductDTO.getUserId()));
         productModel.setOwner(retailersModel);
         productRepo.save(productModel);
         return productModel;

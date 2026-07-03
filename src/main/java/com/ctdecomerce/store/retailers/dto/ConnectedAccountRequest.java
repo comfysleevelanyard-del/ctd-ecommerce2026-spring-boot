@@ -1,4 +1,13 @@
 package com.ctdecomerce.store.retailers.dto;
 
-public record ConnectedAccountRequest(String name, String userId) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ConnectedAccountRequest {
+    private String name;
+    private String userId;
 }
