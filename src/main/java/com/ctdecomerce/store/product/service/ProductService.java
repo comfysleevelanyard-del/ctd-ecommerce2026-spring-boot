@@ -1,10 +1,12 @@
 package com.ctdecomerce.store.product.service;
 
+import com.ctdecomerce.store.dto.IdRequest;
 import com.ctdecomerce.store.product.dto.CreateProductDTO;
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.repository.ProductRepo;
 import com.ctdecomerce.store.retailers.model.RetailersModel;
 import com.ctdecomerce.store.retailers.repository.RetailersRepo;
+import com.stripe.model.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,7 @@ public class ProductService {
         productModel.setName(createProductDTO.getName());
         productModel.setDescription(createProductDTO.getDescription());
         productModel.setPriceInCents(createProductDTO.getPriceInCents());
-        RetailersModel retailersModel = retailersRepo.findRetailerById(UUID.fromString(createProductDTO.getUserId()));
+        RetailersModel retailersModel = retailersRepo.findById(UUID.fromString(createProductDTO.getUserId())).orElse(null);
         productModel.setOwner(retailersModel);
         productRepo.save(productModel);
         return productModel;
@@ -36,5 +38,10 @@ public class ProductService {
     @Transactional
     public List<ProductModel> getAllProducts() {
         return productRepo.findAll();
+    }
+
+    @Transactional
+    public ProductModel getProductById(IdRequest idRequest) {
+        return productRepo.findById(UUID.fromString(idRequest.getId())).orElse(null);
     }
 }

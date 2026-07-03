@@ -1,5 +1,7 @@
 package com.ctdecomerce.store.retailers.controller;
 
+import com.ctdecomerce.store.dto.IdRequest;
+import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.retailers.dto.ConnectedAccountDTO;
 import com.ctdecomerce.store.retailers.dto.ConnectedAccountRequest;
 import com.ctdecomerce.store.retailers.service.RetailersService;
@@ -8,6 +10,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Account;
 import com.stripe.model.Event;
 import com.stripe.net.Webhook;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

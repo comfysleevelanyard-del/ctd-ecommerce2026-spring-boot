@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface RetailersRepo extends JpaRepository<RetailersModel, UUID> {
-    RetailersModel findRetailerById(UUID id);
+    RetailersModel findRetailerByUserId(String userId);
 }
