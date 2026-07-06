@@ -47,9 +47,7 @@ public class RetailersController {
         }
         if ("account.updated".equals(event.getType())) {
             Account account = Account.retrieve(event.getAccount());
-            System.out.println("Running");
             if (account.getChargesEnabled()) {
-                System.out.println("Running");
                 Map<String, String> metadata = account.getMetadata();
                 retailersService.createAccountToDB(metadata.get("name"), account.getId(), metadata.get("userId"));
                 return ResponseEntity.status(HttpStatus.OK).body("Success");
