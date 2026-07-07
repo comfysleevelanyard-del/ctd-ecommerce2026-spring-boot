@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+                .cors(cors -> cors.disable());
         return http.build();
     }
 
