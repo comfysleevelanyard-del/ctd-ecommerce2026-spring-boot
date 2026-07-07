@@ -53,10 +53,7 @@ public class RetailersController {
                 return ResponseEntity.status(HttpStatus.OK).body("Success");
             }
         }
-
-
         return ResponseEntity.status(HttpStatus.OK).
-
                 body("No event found");
     }
 }
