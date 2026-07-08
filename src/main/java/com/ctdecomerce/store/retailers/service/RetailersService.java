@@ -14,11 +14,17 @@ import com.stripe.model.AccountLink;
 import com.stripe.param.AccountCreateParams;
 import com.stripe.param.AccountLinkCreateParams;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
 @Service
+@Setter
+@Getter
 public class RetailersService {
     private final RetailersRepo retailersRepo;
     private final UserRepo userRepo;
