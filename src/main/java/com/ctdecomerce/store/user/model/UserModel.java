@@ -14,21 +14,22 @@ import java.util.UUID;
 public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name="id")
     private UUID id;
 
-    @Column()
+    @Column(name="name")
     private String name;
 
-    @Column(unique = true)
+    @Column(name="user_id",unique = true)
     private String userId;
 
-    @Column()
+    @Column(name="email")
     private String email;
 
-    @Column()
+    @Column(name="ip_address")
     private String ipAddress;
 
-    @Column()
+    @Column(name="logins_count")
     private int loginsCount;
 }
 
