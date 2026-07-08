@@ -29,4 +29,7 @@ public class OrdersModel {
 
     @Column()
     private boolean completed = false;
+
+    @Column()
+    private String status = "pending";
 }
