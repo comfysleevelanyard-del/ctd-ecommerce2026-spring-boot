@@ -1,6 +1,5 @@
 package com.ctdecomerce.store.user.service;
 
-
 import com.ctdecomerce.store.user.model.UserModel;
 import com.ctdecomerce.store.user.repository.UserRepo;
 import jakarta.transaction.Transactional;
