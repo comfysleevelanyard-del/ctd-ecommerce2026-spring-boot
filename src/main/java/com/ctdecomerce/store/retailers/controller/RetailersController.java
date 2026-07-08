@@ -3,6 +3,8 @@ package com.ctdecomerce.store.retailers.controller;
 import com.ctdecomerce.store.cart.model.CartModel;
 import com.ctdecomerce.store.cart.repo.CartRepo;
 import com.ctdecomerce.store.dto.IdRequest;
+import com.ctdecomerce.store.orders.model.OrdersModel;
+import com.ctdecomerce.store.orders.repository.OrdersRepo;
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.retailers.dto.ConnectedAccountDTO;
 import com.ctdecomerce.store.retailers.dto.ConnectedAccountRequest;
@@ -34,13 +36,15 @@ public class RetailersController {
     private final RetailersService retailersService;
     private final CartRepo cartRepo;
     private final UserRepo userRepo;
+    private final OrdersRepo ordersRepo;
     @Value("${stripe.webhook.secret}")
     private String webhookSecret;
 
-    public RetailersController(RetailersService retailersService, CartRepo cartRepo, UserRepo userRepo) {
+    public RetailersController(RetailersService retailersService, CartRepo cartRepo, UserRepo userRepo, OrdersRepo ordersRepo) {
         this.retailersService = retailersService;
         this.cartRepo = cartRepo;
         this.userRepo = userRepo;
+        this.ordersRepo = ordersRepo;
     }
 
     @PostMapping("/create")
@@ -80,6 +84,10 @@ public class RetailersController {
                     cart.setShowing(false);
                     cartRepo.save(cart);
                 }
+                OrdersModel order = new OrdersModel();
+                order.setUser(user);
+                order.setCart(carts);
+                ordersRepo.save(order);
                 return ResponseEntity.status(HttpStatus.OK).body("Complete");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Deserialization failed");

@@ -28,5 +28,5 @@ public class OrdersModel {
     private List<CartModel> cart;
 
     @Column()
-    private String status;
+    private boolean completed = false;
 }
