@@ -1,10 +1,11 @@
-package com.ctdecomerce.store.cart.model;
+package com.ctdecomerce.store.orders.model;
 
-import com.ctdecomerce.store.product.model.ProductModel;
+import com.ctdecomerce.store.cart.model.CartModel;
 import com.ctdecomerce.store.user.model.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -12,22 +13,20 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "cart")
-public class CartModel {
+@Entity(name = "orders")
+public class OrdersModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne()
-    @JoinColumn
+    @JoinColumn()
     private UserModel user;
 
-    @Column()
-    private boolean showing = true;
+    @ManyToMany()
+    @JoinTable()
+    private List<CartModel> cart;
 
     @Column()
-    private int quantity = 1;
-
-    @ManyToOne()
-    private ProductModel product;
+    private String status;
 }

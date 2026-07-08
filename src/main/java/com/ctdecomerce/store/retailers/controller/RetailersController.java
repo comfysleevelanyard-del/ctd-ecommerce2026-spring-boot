@@ -78,7 +78,6 @@ public class RetailersController {
                 Map<String, String> metadata = session.getMetadata();
                 UserModel user = userRepo.findUserModelByUserId(metadata.get("userId"));
                 List<CartModel> carts = cartRepo.findCartModelsByUserId(user);
-                cartRepo.deleteAll(carts);
                 return ResponseEntity.status(HttpStatus.OK).body("Complete");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Deserialization failed");

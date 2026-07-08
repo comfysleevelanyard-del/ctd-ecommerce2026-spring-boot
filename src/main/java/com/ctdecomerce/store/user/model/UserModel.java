@@ -26,6 +26,9 @@ public class UserModel {
     @Column(name="ip_address")
     private String ipAddress;
 
+    @Column()
+    private String name;
+
     @Column(name="logins_count")
     private int loginsCount;
 }
