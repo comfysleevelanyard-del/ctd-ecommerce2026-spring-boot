@@ -24,9 +24,13 @@ public class OrdersModel {
     @JoinColumn()
     private UserModel user;
 
-    @ManyToMany()
-    @JoinTable()
-    private List<CartModel> cart;
+    @OneToOne()
+    @JoinTable(
+            name = "orders_cart",
+            joinColumns = @JoinColumn(name = "orders_id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_id")
+    )
+    private CartModel cart;
 
     @Column()
     private boolean completed = false;
