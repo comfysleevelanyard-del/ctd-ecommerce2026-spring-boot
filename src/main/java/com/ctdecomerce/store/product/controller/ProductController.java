@@ -2,6 +2,7 @@ package com.ctdecomerce.store.product.controller;
 
 import com.ctdecomerce.store.dto.IdRequest;
 import com.ctdecomerce.store.product.dto.CreateProductDTO;
+import com.ctdecomerce.store.product.dto.ProductDTO;
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.service.ProductService;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
@@ -29,7 +30,7 @@ public class ProductController {
 
     @RateLimiter(name = "apiRateLimiter", fallbackMethod = "rateLimiterFallback")
     @GetMapping("/all")
-    public ResponseEntity<List<ProductModel>> getAllProducts() {
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 

@@ -2,6 +2,7 @@ package com.ctdecomerce.store.product.service;
 
 import com.ctdecomerce.store.dto.IdRequest;
 import com.ctdecomerce.store.product.dto.CreateProductDTO;
+import com.ctdecomerce.store.product.dto.ProductDTO;
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.repository.ProductRepo;
 import com.ctdecomerce.store.retailers.model.RetailersModel;
@@ -10,6 +11,7 @@ import com.stripe.model.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,8 +38,15 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ProductModel> getAllProducts() {
-        return productRepo.findAll();
+    public List<ProductDTO> getAllProducts() {
+        List<ProductModel> allProductsUnfiltered = productRepo.findAll();
+        List<ProductDTO> filteredProducts = new ArrayList<>();
+        for (ProductModel product : allProductsUnfiltered) {
+            ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), product.getOwner());
+            filteredProducts.add(newProduct);
+            System.out.println(newProduct);
+        }
+        return filteredProducts;
     }
 
     @Transactional
