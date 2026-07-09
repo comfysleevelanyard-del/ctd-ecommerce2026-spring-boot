@@ -35,6 +35,11 @@ public class ProductService {
         return productModel;
     }
 
+//    @Transactional
+//    public ProductModel changeProductName(CreateProductDTO product) {
+//        var product = productRepo.findById()
+//    }
+
     @Transactional
     public List<ProductModel> getAllProducts() {
         return productRepo.findAll();

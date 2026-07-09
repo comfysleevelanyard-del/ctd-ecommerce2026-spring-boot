@@ -2,6 +2,7 @@ package com.ctdecomerce.store.retailers.model;
 
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.user.model.UserModel;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class RetailersModel {
     @Column()
     private Date dateCreated = new Date();
 
+    @JsonManagedReference
     @OneToMany()
     @JoinColumn(name="owner_id")
     private List<ProductModel> products;

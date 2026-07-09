@@ -84,7 +84,7 @@ public class RetailersService {
             return new IsRetailer(false);
         }
     }
-
+    @Transactional
     public RetailersModel findRetailerFromUser(UserIdRequest userIdRequest) {
         try {
             var user = userRepo.findUserModelByUserId(userIdRequest.getUserId());

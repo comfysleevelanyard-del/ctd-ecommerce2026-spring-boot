@@ -1,6 +1,7 @@
 package com.ctdecomerce.store.product.model;
 
 import com.ctdecomerce.store.retailers.model.RetailersModel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,7 @@ public class ProductModel {
 
     @ManyToOne()
     @JoinColumn()
+    @JsonBackReference
     private RetailersModel owner;
 
 }
