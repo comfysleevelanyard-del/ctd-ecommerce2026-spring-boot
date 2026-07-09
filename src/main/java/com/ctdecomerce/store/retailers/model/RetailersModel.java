@@ -35,4 +35,8 @@ public class RetailersModel {
 
     @Column()
     private Date dateCreated = new Date();
+
+    @OneToMany()
+    @JoinColumn(name="owner_id")
+    private List<ProductModel> products;
 }

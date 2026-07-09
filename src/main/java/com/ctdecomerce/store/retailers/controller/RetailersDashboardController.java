@@ -16,7 +16,7 @@ import com.ctdecomerce.store.retailers.dto.IsRetailer;
 
 @Setter
 @RestController("RetailersDashboardController")
-@RequestMapping("/retailerdashboard")
+@RequestMapping("/retailer-dashboard")
 public class RetailersDashboardController {
     private RetailersService retailersService;
 
@@ -29,9 +29,11 @@ public class RetailersDashboardController {
         return new ResponseEntity<>(retailersService.checkIfRetailer(userIdRequest), HttpStatus.OK);
     }
 
-    @PostMapping("/findRetailer")
+    @PostMapping("/find-retailer")
     public ResponseEntity<RetailersModel> findRetailer(@RequestBody UserIdRequest userIdRequest) {
         return new ResponseEntity<>(retailersService.findRetailerFromUser(userIdRequest), HttpStatus.OK);
     }
+
+    @PostMapping
 
 }
