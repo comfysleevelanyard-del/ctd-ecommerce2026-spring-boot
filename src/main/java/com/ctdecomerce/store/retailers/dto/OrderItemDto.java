@@ -1,6 +1,5 @@
 package com.ctdecomerce.store.retailers.dto;
 
-import com.ctdecomerce.store.user.model.UserModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +12,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class OrderItemDto {
-
+        private UUID id;
         private UUID productId;
         private String productName;
         private int quantity;
         private double price;
         private String userName;
         private String email;
-        private boolean isAvailable;
-        private boolean isShowing;
-        private int stock;
-
+        private String status;
+        private boolean completed;
 }
