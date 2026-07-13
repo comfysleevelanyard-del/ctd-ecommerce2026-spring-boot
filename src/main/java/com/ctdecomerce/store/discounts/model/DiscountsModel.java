@@ -1,0 +1,29 @@
+package com.ctdecomerce.store.discounts.model;
+
+import com.ctdecomerce.store.product.model.ProductModel;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.UUID;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity(name = "discounts")
+public class DiscountsModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @ManyToOne()
+    @JoinColumn()
+    private ProductModel product;
+
+    @Column()
+    private double offer;
+
+    @Column()
+    private String name;
+}
