@@ -1,6 +1,7 @@
 package com.ctdecomerce.store.cart.controller;
 
 import com.ctdecomerce.store.cart.dto.AddToCart;
+import com.ctdecomerce.store.cart.dto.CartDTO;
 import com.ctdecomerce.store.cart.dto.UpdateQuantityRequest;
 import com.ctdecomerce.store.cart.dto.UserIdRequest;
 import com.ctdecomerce.store.cart.model.CartModel;
@@ -32,7 +33,7 @@ public class CartController {
 
     @RateLimiter(name = "apiRateLimiter", fallbackMethod = "rateLimiterFallback")
     @PostMapping("/get")
-    public ResponseEntity<List<CartModel>> getCart(@RequestBody UserIdRequest id) {
+    public ResponseEntity<List<CartDTO>> getCart(@RequestBody UserIdRequest id) {
         return new ResponseEntity<>(cartService.getCart(id), HttpStatus.OK);
     }
 

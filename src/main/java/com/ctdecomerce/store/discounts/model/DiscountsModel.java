@@ -17,7 +17,7 @@ public class DiscountsModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne()
+    @OneToOne()
     @JoinColumn()
     private ProductModel product;
 

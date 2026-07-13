@@ -1,4 +1,4 @@
-package com.ctdecomerce.store.product.service;
+package com.ctdecomerce.store.product.dto;
 
 
 import lombok.AllArgsConstructor;

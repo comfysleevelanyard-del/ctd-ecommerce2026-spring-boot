@@ -13,4 +13,7 @@ public class ProductDTO {
     private UUID id;
     private String name;
     private OwnerDTO owner;
+    private double priceInCents;
+    private boolean discounted;
+    private double ogPriceInCents;
 }

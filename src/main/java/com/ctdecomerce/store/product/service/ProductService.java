@@ -1,5 +1,7 @@
 package com.ctdecomerce.store.product.service;
 
+import com.ctdecomerce.store.discounts.model.DiscountsModel;
+import com.ctdecomerce.store.discounts.repository.DiscountsRepo;
 import com.ctdecomerce.store.dto.IdRequest;
 import com.ctdecomerce.store.product.dto.*;
 import com.ctdecomerce.store.product.model.ProductModel;
@@ -17,10 +19,12 @@ import java.util.UUID;
 public class ProductService {
     private final ProductRepo productRepo;
     private final RetailersRepo retailersRepo;
+    private final DiscountsRepo discountsRepo;
 
-    public ProductService(ProductRepo productRepo, RetailersRepo retailersRepo) {
+    public ProductService(ProductRepo productRepo, RetailersRepo retailersRepo, DiscountsRepo discountsRepo) {
         this.productRepo = productRepo;
         this.retailersRepo = retailersRepo;
+        this.discountsRepo = discountsRepo;
     }
 
     @Transactional
@@ -36,8 +40,6 @@ public class ProductService {
     }
 
 
-
-
 //    @Transactional
 //    public ProductModel changeProductName(CreateProductDTO product) {
 //        var product = productRepo.findById()
@@ -48,9 +50,16 @@ public class ProductService {
         List<ProductModel> allProductsUnfiltered = productRepo.findAll();
         List<ProductDTO> filteredProducts = new ArrayList<>();
         for (ProductModel product : allProductsUnfiltered) {
-            OwnerDTO owner = new OwnerDTO( product.getOwner().getId(), product.getOwner().getName());
-            ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner);
-            filteredProducts.add(newProduct);
+            OwnerDTO owner = new OwnerDTO(product.getOwner().getId(), product.getOwner().getName());
+            DiscountsModel discounts = discountsRepo.findDiscountsModelByProduct(product);
+            if (discounts != null) {
+                double productOgPrice = ((double) product.getPriceInCents() / 100) * (1 - discounts.getOffer()) * 100;
+                ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner, (int) productOgPrice, true, product.getPriceInCents());
+                filteredProducts.add(newProduct);
+            } else {
+                ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner, product.getPriceInCents(), false, product.getPriceInCents());
+                filteredProducts.add(newProduct);
+            }
         }
         return filteredProducts;
     }
@@ -73,6 +82,7 @@ public class ProductService {
         product.setDescription(editDescriptionReqDto.getDescription());
         productRepo.save(product);
     }
+
     @Transactional
     public void changeProductPrice(EditPriceReqDto editPriceReqDto) {
         var product = productRepo.findById(editPriceReqDto.getProduct_id()).orElseThrow();
@@ -100,9 +110,6 @@ public class ProductService {
         product.setShowing(editShowingReqDto.isShowing());
         productRepo.save(product);
     }
-
-
-
 
 
 }

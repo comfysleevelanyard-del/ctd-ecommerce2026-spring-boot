@@ -1,6 +1,7 @@
 package com.ctdecomerce.store.discounts.controller;
 
 import com.ctdecomerce.store.discounts.dto.FindByProduct;
+import com.ctdecomerce.store.discounts.model.DiscountsModel;
 import com.ctdecomerce.store.discounts.service.DiscountsService;
 import com.ctdecomerce.store.product.model.ProductModel;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class DiscountsController {
     private final DiscountsService discountsService;
 
     @PostMapping("/product/get")
-    public ResponseEntity<List<ProductModel>> findDiscountsForProduct(@RequestBody FindByProduct product) {
+    public ResponseEntity<DiscountsModel> findDiscountsForProduct(@RequestBody FindByProduct product) {
         return new ResponseEntity<>(discountsService.getDiscountsByProduct(product), HttpStatus.OK);
     }
 }

@@ -1,10 +1,16 @@
 package com.ctdecomerce.store.cart.service;
 
 import com.ctdecomerce.store.cart.dto.AddToCart;
+import com.ctdecomerce.store.cart.dto.CartDTO;
 import com.ctdecomerce.store.cart.dto.UpdateQuantityRequest;
 import com.ctdecomerce.store.cart.dto.UserIdRequest;
 import com.ctdecomerce.store.cart.model.CartModel;
 import com.ctdecomerce.store.cart.repo.CartRepo;
+import com.ctdecomerce.store.categories.repository.CategoriesRepo;
+import com.ctdecomerce.store.discounts.model.DiscountsModel;
+import com.ctdecomerce.store.discounts.repository.DiscountsRepo;
+import com.ctdecomerce.store.product.dto.OwnerDTO;
+import com.ctdecomerce.store.product.dto.ProductDTO;
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.repository.ProductRepo;
 import com.ctdecomerce.store.user.model.UserModel;
@@ -15,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +33,8 @@ public class CartService {
     private final CartRepo cartRepo;
     private final ProductRepo productRepo;
     private final UserRepo userRepo;
+    private final DiscountsRepo discountsRepo;
+    private final CategoriesRepo categoriesRepo;
 
 
     @Transactional
@@ -40,9 +49,25 @@ public class CartService {
     }
 
     @Transactional
-    public List<CartModel> getCart(UserIdRequest userIdRequest) {
+    public List<CartDTO> getCart(UserIdRequest userIdRequest) {
         UserModel user = userRepo.findUserModelByUserId(userIdRequest.getUserId());
-        return cartRepo.findCartModelsByUserId(user, true);
+        List<CartModel> carts = cartRepo.findCartModelsByUserId(user, true);
+        List<CartDTO> deserializedCarts = new ArrayList<>();
+        for (CartModel cart : carts) {
+            ProductDTO productFinal;
+            ProductModel product = cart.getProduct();
+            OwnerDTO owner = new OwnerDTO(product.getOwner().getId(), product.getOwner().getName());
+            DiscountsModel discounts = discountsRepo.findDiscountsModelByProduct(product);
+            if (discounts != null) {
+                double productOgPrice = ((double) product.getPriceInCents() / 100) * (1 - discounts.getOffer()) * 100;
+                productFinal = new ProductDTO(product.getId(), product.getName(), owner, (int) productOgPrice, true, product.getPriceInCents());
+            } else {
+                productFinal = new ProductDTO(product.getId(), product.getName(), owner, product.getPriceInCents(), false, product.getPriceInCents());
+            }
+            CartDTO cartDeserialized = new CartDTO(cart.getId(), cart.isShowing(), cart.getQuantity(), productFinal, carts.getFirst().getUser().getUserId());
+            deserializedCarts.add(cartDeserialized);
+        }
+        return deserializedCarts;
     }
 
     @Transactional

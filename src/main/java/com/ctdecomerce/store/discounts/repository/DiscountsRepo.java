@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DiscountsRepo extends JpaRepository<DiscountsModel, UUID> {
-    List<ProductModel> findDiscountsModelsByProduct(ProductModel product);
+    DiscountsModel findDiscountsModelByProduct(ProductModel product);
 }

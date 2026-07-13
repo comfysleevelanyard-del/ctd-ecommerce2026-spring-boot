@@ -22,9 +22,9 @@ public class DiscountsService {
     private final ProductRepo productRepo;
 
     @Transactional
-    public List<ProductModel> getDiscountsByProduct(FindByProduct productStrings) {
+    public DiscountsModel getDiscountsByProduct(FindByProduct productStrings) {
         UUID productIdAsUUID = UUID.fromString(productStrings.getProductId());
         ProductModel product = productRepo.findById(productIdAsUUID).orElse(null);
-        return discountsRepo.findDiscountsModelsByProduct(product);
+        return discountsRepo.findDiscountsModelByProduct(product);
     }
 }
