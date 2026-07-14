@@ -15,12 +15,11 @@ import com.ctdecomerce.store.user.model.UserModel;
 import com.ctdecomerce.store.user.repository.UserRepo;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Account;
-import com.stripe.model.Event;
-import com.stripe.model.EventDataObjectDeserializer;
-import com.stripe.model.StripeObject;
+import com.stripe.model.*;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
+import com.stripe.param.PaymentIntentCreateParams;
+import com.stripe.param.TransferCreateParams;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -83,7 +82,11 @@ public class RetailersController {
             EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
             if (dataObjectDeserializer.getObject().isPresent()) {
                 StripeObject stripeObject = dataObjectDeserializer.getObject().get();
+
                 Session session = (Session) stripeObject;
+                String payId = session.getPaymentIntent();
+                PaymentIntent paymentIntent = PaymentIntent.retrieve(payId);
+                String chargId = paymentIntent.getLatestCharge();
                 Map<String, String> metadata = session.getMetadata();
                 UserModel user = userRepo.findUserModelByUserId(metadata.get("userId"));
                 List<CartModel> carts = cartRepo.findCartModelsByUserId(user, true);
@@ -95,6 +98,17 @@ public class RetailersController {
                     order.setUser(user);
                     ordersRepo.save(order);
                     deliveryService.createNewDelivery(new CreateDeliveryDTO(order.getId(), order.getCart().getProduct().getOwner().getId()));
+                    try {
+                        TransferCreateParams transferParams = TransferCreateParams.builder()
+                                .setAmount((long) cart.getProduct().getPriceInCents())
+                                .setCurrency("usd")
+                                .setDestination(cart.getProduct().getOwner().getAccountId())
+                                .setSourceTransaction(chargId)
+                                .build();
+                        Transfer transfer = Transfer.create(transferParams);
+                    } catch (StripeException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
                 return ResponseEntity.status(HttpStatus.OK).body("Complete");
             } else {
