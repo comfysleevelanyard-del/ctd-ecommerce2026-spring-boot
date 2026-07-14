@@ -109,6 +109,7 @@ public class RetailersController {
                     if (discount != null) {
                         double finalPrice = (cart.getProduct().getPriceInCents() - (cart.getProduct().getPriceInCents() * discount.getOffer())) * cart.getQuantity();
                         order.setUser(user);
+                        System.out.println(finalPrice);
                         order.setFinalPriceInCents(finalPrice);
                         ordersRepo.save(order);
                         deliveryService.createNewDelivery(new CreateDeliveryDTO(order.getId(), order.getCart().getProduct().getOwner().getId()));
