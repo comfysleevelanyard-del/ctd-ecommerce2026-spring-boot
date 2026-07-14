@@ -7,6 +7,7 @@ import com.ctdecomerce.store.product.dto.*;
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.repository.ProductRepo;
 import com.ctdecomerce.store.retailers.dto.OrderItemDto;
+import com.ctdecomerce.store.retailers.dto.ProductIdRequest;
 import com.ctdecomerce.store.retailers.dto.RetailerIdRequest;
 import com.ctdecomerce.store.retailers.model.RetailersModel;
 import com.ctdecomerce.store.retailers.repository.RetailersRepo;
@@ -118,9 +119,14 @@ public class ProductService {
 
     @Transactional
     public List<ProductModel> getRetailersProducts(RetailerIdRequest retailerIdRequest) {
-        System.out.println(retailerIdRequest.getRetailer_id());
+
         var retailer = retailersRepo.findById(retailerIdRequest.getRetailer_id()).orElseThrow();
         return productRepo.findProductModelsByOwner(retailer);
+    }
+
+    @Transactional
+    public ProductModel getRetailerProduct(ProductIdRequest productIdRequest) {
+       return productRepo.findById(productIdRequest.getProductId()).orElseThrow();
     }
 
 

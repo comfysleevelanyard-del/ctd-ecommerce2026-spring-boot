@@ -60,4 +60,9 @@ public class RetailersDashboardController {
         
         return retailersService.findRetailerOrders(retailerIdRequest);
     }
+
+    @PostMapping("/get-product")
+    public ProductModel getRetailerProduct(@RequestBody ProductIdRequest productIdRequest) {
+        return productService.getRetailerProduct(productIdRequest);
+    }
 }
