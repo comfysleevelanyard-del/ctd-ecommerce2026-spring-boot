@@ -10,4 +10,6 @@ import java.util.UUID;
 
 public interface ProductRepo extends JpaRepository<ProductModel, UUID> {
     List<ProductModel> findProductModelsByOwner(RetailersModel retailer);
+
+    ProductModel stock(int stock);
 }

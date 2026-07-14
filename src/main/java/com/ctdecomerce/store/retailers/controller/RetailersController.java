@@ -10,6 +10,7 @@ import com.ctdecomerce.store.dto.IdRequest;
 import com.ctdecomerce.store.orders.model.OrdersModel;
 import com.ctdecomerce.store.orders.repository.OrdersRepo;
 import com.ctdecomerce.store.product.model.ProductModel;
+import com.ctdecomerce.store.product.repository.ProductRepo;
 import com.ctdecomerce.store.retailers.dto.ConnectedAccountDTO;
 import com.ctdecomerce.store.retailers.dto.ConnectedAccountRequest;
 import com.ctdecomerce.store.retailers.service.RetailersService;
@@ -45,16 +46,18 @@ public class RetailersController {
     private final OrdersRepo ordersRepo;
     private final DeliveryService deliveryService;
     private final DiscountsRepo discountsRepo;
+    private final ProductRepo productRepo;
     @Value("${stripe.webhook.secret}")
     private String webhookSecret;
 
-    public RetailersController(RetailersService retailersService, CartRepo cartRepo, UserRepo userRepo, OrdersRepo ordersRepo, DeliveryService deliveryService, DiscountsRepo discountsRepo) {
+    public RetailersController(RetailersService retailersService, CartRepo cartRepo, UserRepo userRepo, OrdersRepo ordersRepo, DeliveryService deliveryService, DiscountsRepo discountsRepo, ProductRepo productRepo) {
         this.retailersService = retailersService;
         this.cartRepo = cartRepo;
         this.userRepo = userRepo;
         this.ordersRepo = ordersRepo;
         this.deliveryService = deliveryService;
         this.discountsRepo = discountsRepo;
+        this.productRepo = productRepo;
     }
 
     @PostMapping("/create")
@@ -99,6 +102,9 @@ public class RetailersController {
                     cartRepo.save(cart);
                     OrdersModel order = new OrdersModel();
                     order.setCart(cart);
+                    ProductModel product = cart.getProduct();
+                    product.setStock(product.getStock() - cart.getQuantity());
+                    productRepo.save(product);
                     DiscountsModel discount = discountsRepo.findDiscountsModelByProduct(cart.getProduct());
                     if (discount != null) {
                         double finalPrice = (cart.getProduct().getPriceInCents() - (cart.getProduct().getPriceInCents() * discount.getOffer())) * cart.getQuantity();

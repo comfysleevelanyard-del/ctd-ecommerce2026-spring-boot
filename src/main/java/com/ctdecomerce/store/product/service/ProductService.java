@@ -61,10 +61,14 @@ public class ProductService {
             if (discounts != null) {
                 double productOgPrice = ((double) product.getPriceInCents() / 100) * (1 - discounts.getOffer()) * 100;
                 ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner, (int) productOgPrice, true, product.getPriceInCents());
-                filteredProducts.add(newProduct);
+                if (product.getStock() > 0) {
+                    filteredProducts.add(newProduct);
+                }
             } else {
                 ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner, product.getPriceInCents(), false, product.getPriceInCents());
-                filteredProducts.add(newProduct);
+                if (product.getStock() > 0) {
+                    filteredProducts.add(newProduct);
+                }
             }
         }
         return filteredProducts;
@@ -126,7 +130,7 @@ public class ProductService {
 
     @Transactional
     public ProductModel getRetailerProduct(ProductIdRequest productIdRequest) {
-       return productRepo.findById(productIdRequest.getProductId()).orElseThrow();
+        return productRepo.findById(productIdRequest.getProductId()).orElseThrow();
     }
 
 
