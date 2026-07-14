@@ -75,8 +75,15 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductModel getProductById(IdRequest idRequest) {
-        return productRepo.findById(UUID.fromString(idRequest.getId())).orElse(null);
+    public ProductDTO getProductById(IdRequest idRequest) {
+        ProductModel product = productRepo.findById(UUID.fromString(idRequest.getId())).orElse(null);
+        DiscountsModel discount = discountsRepo.findDiscountsModelByProduct(product);
+        OwnerDTO owner = new OwnerDTO(product.getOwner().getId(), product.getOwner().getName());
+        if (discount == null) {
+            return new ProductDTO(product.getId(), product.getName(), owner, product.getPriceInCents(), false, product.getPriceInCents());
+        } else {
+            return new ProductDTO(product.getId(), product.getName(), owner, (product.getPriceInCents() - product.getPriceInCents() * discount.getOffer()), true, product.getPriceInCents());
+        }
     }
 
     @Transactional
