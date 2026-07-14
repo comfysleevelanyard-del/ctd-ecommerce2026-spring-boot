@@ -107,7 +107,7 @@ public class RetailersController {
                         deliveryService.createNewDelivery(new CreateDeliveryDTO(order.getId(), order.getCart().getProduct().getOwner().getId()));
                         try {
                             TransferCreateParams transferParams = TransferCreateParams.builder()
-                                    .setAmount((long) finalPrice)
+                                    .setAmount((long) (finalPrice * 0.95))
                                     .setCurrency("usd")
                                     .setDestination(cart.getProduct().getOwner().getAccountId())
                                     .setSourceTransaction(chargId)
@@ -124,7 +124,7 @@ public class RetailersController {
                         deliveryService.createNewDelivery(new CreateDeliveryDTO(order.getId(), order.getCart().getProduct().getOwner().getId()));
                         try {
                             TransferCreateParams transferParams = TransferCreateParams.builder()
-                                    .setAmount((long) finalPrice)
+                                    .setAmount((long) (finalPrice * 0.95))
                                     .setCurrency("usd")
                                     .setDestination(cart.getProduct().getOwner().getAccountId())
                                     .setSourceTransaction(chargId)
