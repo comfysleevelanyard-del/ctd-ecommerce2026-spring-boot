@@ -74,4 +74,11 @@ public class DiscountsService {
         discountsRepo.save(discount);
         return discount;
     }
+
+    @Transactional
+    public void deleteDiscount(DeleteRequest deleteRequest) {
+        DiscountsModel discount = discountsRepo.findById(UUID.fromString(deleteRequest.getId())).orElse(null);
+        assert discount != null;
+        discountsRepo.delete(discount);
+    }
 }

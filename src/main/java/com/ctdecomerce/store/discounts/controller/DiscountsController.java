@@ -53,4 +53,10 @@ public class DiscountsController {
     public ResponseEntity<DiscountsModel> changeOffer(@RequestBody ChangeOffer changeOffer) {
         return new ResponseEntity<>(discountsService.changeOffer(changeOffer), HttpStatus.OK);
     }
+
+    @PostMapping("/delete")
+    public ResponseEntity<DeleteRequest> deleteDiscount(@RequestBody DeleteRequest deleteRequest) {
+        discountsService.deleteDiscount(deleteRequest);
+        return new ResponseEntity<>(deleteRequest, HttpStatus.OK);
+    }
 }
