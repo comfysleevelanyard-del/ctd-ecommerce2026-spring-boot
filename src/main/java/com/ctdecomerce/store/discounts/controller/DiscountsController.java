@@ -1,8 +1,6 @@
 package com.ctdecomerce.store.discounts.controller;
 
-import com.ctdecomerce.store.discounts.dto.CreateDiscount;
-import com.ctdecomerce.store.discounts.dto.FindByProduct;
-import com.ctdecomerce.store.discounts.dto.UserIdRequest;
+import com.ctdecomerce.store.discounts.dto.*;
 import com.ctdecomerce.store.discounts.model.DiscountsModel;
 import com.ctdecomerce.store.discounts.service.DiscountsService;
 import com.ctdecomerce.store.product.model.ProductModel;
@@ -38,5 +36,26 @@ public class DiscountsController {
     @PostMapping("/get")
     public ResponseEntity<List<DiscountsModel>> getDiscounts(@RequestBody UserIdRequest userIdRequest) {
         return new ResponseEntity<>(discountsService.getDiscounts(userIdRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<DeleteRequest> deleteDiscount(@RequestBody DeleteRequest deleteRequest) {
+        discountsService.deleteDiscount(deleteRequest);
+        return new ResponseEntity<>(deleteRequest, HttpStatus.OK);
+    }
+
+    @PostMapping("/get/id")
+    public ResponseEntity<DiscountsModel> getById(@RequestBody IdRequest id) {
+        return new ResponseEntity<>(discountsService.getById(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/change/name")
+    public ResponseEntity<DiscountsModel> changeName(@RequestBody ChangeName changeName) {
+        return new ResponseEntity<>(discountsService.changeName(changeName), HttpStatus.OK);
+    }
+
+    @PostMapping("/change/offer")
+    public ResponseEntity<DiscountsModel> changeOffer(@RequestBody ChangeOffer changeOffer) {
+        return new ResponseEntity<>(discountsService.changeOffer(changeOffer), HttpStatus.OK);
     }
 }

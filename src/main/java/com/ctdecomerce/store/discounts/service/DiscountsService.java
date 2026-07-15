@@ -1,8 +1,6 @@
 package com.ctdecomerce.store.discounts.service;
 
-import com.ctdecomerce.store.discounts.dto.CreateDiscount;
-import com.ctdecomerce.store.discounts.dto.FindByProduct;
-import com.ctdecomerce.store.discounts.dto.UserIdRequest;
+import com.ctdecomerce.store.discounts.dto.*;
 import com.ctdecomerce.store.discounts.model.DiscountsModel;
 import com.ctdecomerce.store.discounts.repository.DiscountsRepo;
 import com.ctdecomerce.store.product.dto.ProductDTO;
@@ -14,6 +12,7 @@ import com.ctdecomerce.store.user.model.UserModel;
 import com.ctdecomerce.store.user.repository.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Setter
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class DiscountsService {
     private final DiscountsRepo discountsRepo;
@@ -54,5 +53,33 @@ public class DiscountsService {
         UserModel user = userRepo.findUserModelByUserId(userIdRequest.getUserId());
         RetailersModel retailer = retailersRepo.findRetailerByUser(user);
         return discountsRepo.findDiscountsModelsByRetailer(retailer);
+    }
+
+    @Transactional
+    public void deleteDiscount(DeleteRequest deleteRequest) {
+        DiscountsModel discount = discountsRepo.findById(UUID.fromString(deleteRequest.getId())).orElse(null);
+        assert discount != null;
+        discountsRepo.delete(discount);
+    }
+
+    @Transactional
+    public DiscountsModel getById(IdRequest idRequest) {
+        return discountsRepo.findById(UUID.fromString(idRequest.getId())).orElse(null);
+    }
+
+    @Transactional
+    public DiscountsModel changeName(ChangeName changeName) {
+        DiscountsModel discount = discountsRepo.findById(UUID.fromString(changeName.getId())).orElse(null);
+        assert discount != null;
+        discount.setName(changeName.getName());
+        return discountsRepo.save(discount);
+    }
+
+    @Transactional
+    public DiscountsModel changeOffer(ChangeOffer changeOffer) {
+        DiscountsModel discount = discountsRepo.findById(UUID.fromString(changeOffer.getId())).orElse(null);
+        assert discount != null;
+        discount.setOffer(changeOffer.getOffer());
+        return discountsRepo.save(discount);
     }
 }

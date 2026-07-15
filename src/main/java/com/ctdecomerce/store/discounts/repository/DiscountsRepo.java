@@ -13,4 +13,6 @@ public interface DiscountsRepo extends JpaRepository<DiscountsModel, UUID> {
     DiscountsModel findDiscountsModelByProduct(ProductModel product);
     List<DiscountsModel> findDiscountsModelsByRetailer(RetailersModel retailer);
     void deleteAllByProductId(UUID id);
+
+    UUID id(UUID id);
 }
