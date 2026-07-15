@@ -4,6 +4,8 @@ import com.ctdecomerce.store.delivery.dto.CreateDeliveryDTO;
 import com.ctdecomerce.store.delivery.dto.OrderIdReqeust;
 import com.ctdecomerce.store.delivery.model.DeliveryModel;
 import com.ctdecomerce.store.delivery.repository.DeliveryRepo;
+import com.ctdecomerce.store.discounts.model.DiscountsModel;
+import com.ctdecomerce.store.discounts.repository.DiscountsRepo;
 import com.ctdecomerce.store.orders.model.OrdersModel;
 import com.ctdecomerce.store.orders.repository.OrdersRepo;
 import com.ctdecomerce.store.retailers.model.RetailersModel;
@@ -23,6 +25,7 @@ public class DeliveryService {
     private final DeliveryRepo deliveryRepo;
     private final RetailersRepo retailersRepo;
     private final OrdersRepo ordersRepo;
+    private final DiscountsRepo discountsRepo;
 
     @Transactional
     public void createNewDelivery(CreateDeliveryDTO createDeliveryDTO) {
