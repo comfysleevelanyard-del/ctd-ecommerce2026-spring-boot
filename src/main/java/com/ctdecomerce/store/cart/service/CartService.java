@@ -79,13 +79,16 @@ public class CartService {
     }
 
     @Transactional
-    public CartModel decrementQuantity(UpdateQuantityRequest request) {
+    public void decrementQuantity(UpdateQuantityRequest request) {
         CartModel cart = cartRepo.findById(UUID.fromString(request.getCartId()))
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
         if (cart.getQuantity() > 1) {
             cart.setQuantity(cart.getQuantity() - 1);
+            cartRepo.save(cart);
+        } else {
+            cartRepo.delete(cart);
         }
-        return cartRepo.save(cart);
+
     }
 
 }

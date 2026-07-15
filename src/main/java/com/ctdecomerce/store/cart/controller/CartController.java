@@ -45,8 +45,9 @@ public class CartController {
 
     @RateLimiter(name = "apiRateLimiter", fallbackMethod = "rateLimiterFallback")
     @PostMapping("/decrement")
-    public ResponseEntity<CartModel> decrementQuantity(@RequestBody UpdateQuantityRequest request) {
-        return new ResponseEntity<>(cartService.decrementQuantity(request), HttpStatus.OK);
+    public ResponseEntity<UpdateQuantityRequest> decrementQuantity(@RequestBody UpdateQuantityRequest request) {
+        cartService.decrementQuantity(request);
+        return new ResponseEntity<>(request, HttpStatus.OK);
     }
 
     public ResponseEntity<String> rateLimiterFallback(RequestNotPermitted exception) {
