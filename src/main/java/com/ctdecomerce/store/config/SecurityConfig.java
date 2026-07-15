@@ -37,7 +37,7 @@ public class SecurityConfig {
         corsConfiguration.setAllowedOrigins(List.of("https://ctdecommerce2026nwu.us.auth0.com", "https://ctdecommerce2026.vercel.app"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return urlBasedCorsConfigurationSource;
