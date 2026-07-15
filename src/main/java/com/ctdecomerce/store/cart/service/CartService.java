@@ -39,13 +39,36 @@ public class CartService {
 
     @Transactional
     public CartModel addToCart(AddToCart addToCart) {
-        CartModel cart = new CartModel();
         UserModel user = userRepo.findUserModelByUserId(addToCart.getUserId());
-        cart.setUser(user);
-        ProductModel product = productRepo.findById(UUID.fromString(addToCart.getProductId())).orElse(null);
-        System.out.println(product);
-        cart.setProduct(product);
-        return cartRepo.save(cart);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        ProductModel product = productRepo
+                .findById(UUID.fromString(addToCart.getProductId()))
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        CartModel existingCartItem = cartRepo
+                .findByUserAndProductAndShowingTrue(user, product)
+                .orElse(null);
+
+        if (existingCartItem != null) {
+            if (existingCartItem.getQuantity() >= product.getStock()) {
+                throw new RuntimeException("Cannot add more than available stock");
+            }
+
+            existingCartItem.setQuantity(existingCartItem.getQuantity() + 1);
+            return cartRepo.save(existingCartItem);
+        }
+
+        CartModel newCartItem = new CartModel();
+        newCartItem.setUser(user);
+        newCartItem.setProduct(product);
+        newCartItem.setQuantity(1);
+        newCartItem.setShowing(true);
+
+        return cartRepo.save(newCartItem);
     }
 
     @Transactional
