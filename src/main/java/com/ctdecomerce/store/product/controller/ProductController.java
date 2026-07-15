@@ -37,7 +37,7 @@ public class ProductController {
 
     @RateLimiter(name = "apiRateLimiter", fallbackMethod = "rateLimiterFallback")
     @GetMapping("/get/{id}")
-    public ResponseEntity<ProductModel> getProductById(@PathVariable String id) {
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable String id) {
         IdRequest idReq = new IdRequest(id);
         return new ResponseEntity<>(productService.getProductById(idReq), HttpStatus.OK);
     }
