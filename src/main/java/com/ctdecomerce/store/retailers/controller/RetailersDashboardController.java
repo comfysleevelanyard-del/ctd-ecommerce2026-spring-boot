@@ -35,7 +35,7 @@ public class RetailersDashboardController {
         this.productService = productService;
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<IsRetailer> checkIsRetailer(@RequestBody UserIdRequest userIdRequest) {
         return new ResponseEntity<>(retailersService.checkIfRetailer(userIdRequest), HttpStatus.OK);
     }
